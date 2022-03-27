@@ -1,4 +1,4 @@
-import NavLayout from '../../components/layouts/Navbar'
+import NavLayout from '../../layouts/Navbar'
 const Home = () => {
   return (
     <div className="home">
