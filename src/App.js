@@ -1,5 +1,6 @@
 import Home from './pages/home/Home';
-import Product from './pages/product/Product.jsx'
+import Product from './pages/product/ProductList.jsx'
+import ProductDetail from './pages/product/ProductDetail'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -13,6 +14,7 @@ function App() {
           </Route>
           <Route path="/product">
             <Route index element={<Product />} />
+            <Route path=":name" element={<ProductDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

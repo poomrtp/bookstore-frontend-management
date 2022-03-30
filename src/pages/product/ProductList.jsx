@@ -5,6 +5,11 @@ import DataTable from '../../components/dataTable/DataTable'
 import { getProduct } from '../../services/actions/product.action';
 
 const headTable = [
+  {
+    field: 'images',
+    headerName: 'Image',
+    width: 150
+  },
   { field: 'name', headerName: 'Name', width: 300 },
   {
     field: 'author', headerName: 'Author',
@@ -13,17 +18,33 @@ const headTable = [
     }
   },
   { field: 'publisher', headerName: 'Publisher' },
-  { field: 'price', headerName: 'Book Price' },
-  { field: 'digitalPrice', headerName: 'E-book Price' },
-  { field: 'quantity', headerName: 'Quantity' },
-  { field: '', headerName: 'Action' }
+  {
+    field: 'price', headerName: 'Book Price',
+    valueGetter: (params) => {
+      return params.value || '-'
+    }
+  },
+  {
+    field: 'digitalPrice', headerName: 'E-book Price',
+    valueGetter: (params) => {
+      return params.value || '-'
+    }
+  },
+  { field: 'quantity', headerName: 'Quantity',
+    valueGetter: (params) => {
+      return params.value || '-'
+    }
+  },
+  {
+    field: '',
+    headerName: 'Action'
+  }
 ] 
 
 const Product = () => {
   const [productData, setProductData] = useState('')
   useEffect(() => {
     getProduct().then(res => setProductData(res))
-    // setProductData(data)
   },[])
   return (
     <div className="">
@@ -32,7 +53,10 @@ const Product = () => {
           <div positions="">Product</div>
         </Box>
         <div>
-          <DataTable data={ productData } headTable={ headTable }></DataTable>
+          <DataTable
+            data={[...productData]}
+            headTable={headTable}>
+          </DataTable>
         </div>
       </NavLayout>
     </div>

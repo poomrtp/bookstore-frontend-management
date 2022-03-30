@@ -7,27 +7,33 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import * as Icons from '@mui/icons-material'
 
 const drawerWidth = 240;
 const menuItems = [
   {
     label: 'Home',
-    path: '/'
+    path: '/',
+    icon: 'Home'
   },
   {
     label: 'Product',
-    path: '/product'
+    path: '/product',
+    icon: 'Category'
   }
 ]
+
+const Icon = ({ name, ...rest }) => {
+  const IconComponent = Icons[name];
+  return IconComponent ? <IconComponent {...rest} /> : null;
+};
 
 function NavLayout(props) {
   const { window } = props;
@@ -44,9 +50,9 @@ function NavLayout(props) {
       <List>
         {menuItems.map((text, index) => (
           <ListItem button key={text.label}>
-            {/* <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon> */}
+            <ListItemIcon>
+              <Icon name={text.icon} />
+            </ListItemIcon>
             <Link to={text.path} style={{ color: 'inherit', textDecoration: 'none' }}>
               <ListItemText primary={text.label} />
             </Link>
@@ -54,16 +60,6 @@ function NavLayout(props) {
         ))}
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
     </div>
   );
 
