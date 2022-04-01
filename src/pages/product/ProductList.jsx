@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box } from '@mui/system';
 import NavLayout from '../../layouts/Navbar'
 import DataTable from '../../components/dataTable/DataTable'
-import { getProduct } from '../../services/actions/product.action';
+import { getProducts } from '../../services/actions/product.action';
 
 const headTable = [
   {
@@ -42,9 +42,9 @@ const headTable = [
 ] 
 
 const Product = () => {
-  const [productData, setProductData] = useState('')
+  const [products, setProducts] = useState('')
   useEffect(() => {
-    getProduct().then(res => setProductData(res))
+    getProducts().then(res => setProducts(res))
   },[])
   return (
     <div className="">
@@ -54,7 +54,7 @@ const Product = () => {
         </Box>
         <div>
           <DataTable
-            data={[...productData]}
+            data={[...products]}
             headTable={headTable}>
           </DataTable>
         </div>
