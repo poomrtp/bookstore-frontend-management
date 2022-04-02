@@ -10,6 +10,7 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
 
 // const defaultValues = {
 //   textValue: "",
@@ -22,10 +23,18 @@ import FormControl from '@mui/material/FormControl'
 
 function ProductForm({ data, setProduct }) {
 
-  const [checked, setChecked] = useState(true)
+  const [checkStatus, setChecked] = useState({
+    bookCheck: data.price ?  true : false || true,
+    eBookCheck: data.digitalPrice ?  true : false || true
+  })
   const handleChange = (event) => {
-    setChecked(event.target.checked)
+    setChecked({
+      ...checkStatus,
+      [event.target.name]: event.target.checked,
+    })
   }
+  const { bookCheck, eBookCheck } = checkStatus
+
   const submitData = () => {
     console.log('submitData', data)
   }
@@ -156,42 +165,47 @@ function ProductForm({ data, setProduct }) {
             {data.images?.map((image) => (
               <Image key={image} src={image} alt="" />
             ))}
+            <AddPhotoAlternateOutlinedIcon color="primary" sx={{ fontSize: 86 }}/>
           </Box>
         </Grid>
         <Grid item xs={6} md={6} sx={{ display: 'inline-flex' }}>
           <div>
-          <Checkbox
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
-          <TextField
-            id="outlined-required"
-            label="หนังสือเล่ม"
-            type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            value={data.price || ''}
-            onChange={(e) => setProduct({ ...data, price: +e.target.value }) }
-          />
-          <Checkbox
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
-          <TextField
-            id="outlined-required"
-            type="number"
-            label="E-Book"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            value={data.digitalPrice || ''}
-            onChange={(e) => setProduct({ ...data, digitalPrice: +e.target.value }) }
-          />
+            <Checkbox
+              checked={bookCheck}
+              name="bookCheck"
+              onChange={handleChange}
+              inputProps={{ 'aria-label': 'book' }}
+            />
+            <TextField
+              id="outlined-required"
+              label="หนังสือเล่ม"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              disabled={!bookCheck}
+              variant="outlined"
+              value={data.price || ''}
+              onChange={(e) => setProduct({ ...data, price: +e.target.value }) }
+            />
+            <Checkbox
+              checked={eBookCheck}
+              name="eBookCheck"
+              onChange={handleChange}
+              inputProps={{ 'aria-label': 'e-book' }}
+            />
+            <TextField
+              id="outlined-required"
+              type="number"
+              label="E-Book"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              disabled={!eBookCheck}
+              variant="outlined"
+              value={data.digitalPrice || ''}
+              onChange={(e) => setProduct({ ...data, digitalPrice: +e.target.value }) }
+            />
           </div>
         </Grid>
         {/* row 5 */}
@@ -224,18 +238,6 @@ function ProductForm({ data, setProduct }) {
           />
         </Grid>
         <Grid item xs={6} md={4}>
-          {/* <TextField
-            id="outlined-required"
-            label="รายละเอียด"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-            multiline
-            value={data.status || ''}
-            sx={{ width: '100%' }}
-            onChange={(e) => setProduct({ ...data, description: e.target.value }) }
-          /> */}
           <div>
             <FormControl
               sx={{ width: '100%' }} 
