@@ -12,11 +12,16 @@ const ProductDetail = () => {
       return await getProductByName(name).then(res => setProduct(res))
     }
     fetchData()
-  },[name])
+  }, [name])
+  
+  const addList = (key) => {
+    console.log(key)
+    key.push('')
+  }
   return (
     <div className="">
       <NavLayout>
-        <ProductForm data={product} setProduct={setProduct}></ProductForm>
+        <ProductForm data={product} setProduct={setProduct} addList={addList}></ProductForm>
       </NavLayout>
     </div>
   )

@@ -10,7 +10,8 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
-import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 // const defaultValues = {
 //   textValue: "",
@@ -37,6 +38,21 @@ function ProductForm({ data, setProduct }) {
 
   const submitData = () => {
     console.log('submitData', data)
+  }
+
+  const addList = (key) => {
+    console.log(key)
+    data[key].push('')
+    console.log(data[key])
+    console.log({ ...data, [key]: data[key] })
+    setProduct({ ...data, [key]: data[key] })
+  }
+
+  const changeArrayValue = (value, key, index) => {
+    const ObjKey = data[key]
+    ObjKey[index] = value
+    console.log(ObjKey)
+    return ObjKey
   }
 
   return (
@@ -102,44 +118,50 @@ function ProductForm({ data, setProduct }) {
         {/* row 3 */}
         <Grid item xs={6} md={3}>
           {data.author?.map((row, index) => (
-            <TextField
-              key={index}
-              required
-              id="outlined-required"
-              label="ผู้แต่ง"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              value={row || ''}
-              sx={{ width: '100%', mb: 1 }}
-              onChange={(e) => setProduct({ ...data, author: e.target.value }) }
-            />
+            <Box key={index} display="inline-flex" justifyContent="space-between" style={{alignItems: 'center', alignContent: 'center', padding: 0 }}>
+              <TextField
+                // key={index}
+                required
+                id="outlined-required"
+                label="ผู้แต่ง"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={row || ''}
+                sx={{ width: index === 0 ? '100%' : '100%', mb: 1 }}
+                onChange={(e) => setProduct({ ...data, author: changeArrayValue(e.target.value, 'author', index) }) }
+              />
+                { index === 0 ? null : <Box sx={{ marginLeft: 2 }}><DeleteOutlineIcon /></Box> }
+            </Box>
           ))}
           <Box display="flex" justifyContent="start" sx={{ mt: 2 }}>
-            <Button variant={"contained"}>
+            <Button variant={"contained"} onClick={() => addList('author')}>
               Add
             </Button>
           </Box>
         </Grid>
         <Grid item xs={6} md={3}>
           {data.illustrator?.map((row, index) => (
-            <TextField
-              key={index}
-              required
-              id="outlined-required"
-              label="ภาพประกอบ"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              value={row || ''}
-              sx={{ width: '100%', mb: 1 }}
-              onChange={(e) => setProduct({ ...data, illustrator: e.target.value }) }
-            />
+            <Box key={index} display="inline-flex" justifyContent="space-between" style={{alignItems: 'center', alignContent: 'center', padding: 0 }}>
+              <TextField
+                key={index}
+                required
+                id="outlined-required"
+                label="ภาพประกอบ"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                value={row || ''}
+                sx={{ width: '100%', mb: 1 }}
+                onChange={(e) => setProduct({ ...data, illustrator: changeArrayValue(e.target.value, 'illustrator', index) }) }
+              />
+              { index === 0 ? null : <Box sx={{ marginLeft: 2 }}><DeleteOutlineIcon /></Box> }
+            </Box>
           ))}
           <Box display="flex" justifyContent="start" sx={{ mt: 2 }}>
-            <Button variant={"contained"}>
+            <Button variant={"contained"} onClick={() => addList('illustrator')}>
               Add
             </Button>
           </Box>
