@@ -11,7 +11,9 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import IconButton from '@mui/material/IconButton'
+import { red } from '@mui/material/colors'
 
 // const defaultValues = {
 //   textValue: "",
@@ -41,17 +43,18 @@ function ProductForm({ data, setProduct }) {
   }
 
   const addList = (key) => {
-    console.log(key)
     data[key].push('')
-    console.log(data[key])
-    console.log({ ...data, [key]: data[key] })
+    setProduct({ ...data, [key]: data[key] })
+  }
+
+  const removeList = (key, index) => {
+    data[key].splice(index, 1)
     setProduct({ ...data, [key]: data[key] })
   }
 
   const changeArrayValue = (value, key, index) => {
     const ObjKey = data[key]
     ObjKey[index] = value
-    console.log(ObjKey)
     return ObjKey
   }
 
@@ -63,7 +66,7 @@ function ProductForm({ data, setProduct }) {
           <TextField
             required
             id="outlined-required"
-            label="รหัสสินค้า(ไทย)"
+            label="รหัสสินค้า"
             InputLabelProps={{
               shrink: true,
             }}
@@ -132,7 +135,13 @@ function ProductForm({ data, setProduct }) {
                 sx={{ width: index === 0 ? '100%' : '100%', mb: 1 }}
                 onChange={(e) => setProduct({ ...data, author: changeArrayValue(e.target.value, 'author', index) }) }
               />
-                { index === 0 ? null : <Box sx={{ marginLeft: 2 }}><DeleteOutlineIcon /></Box> }
+              {index === 0 ? null :
+                <Box sx={{ marginLeft: 1 }}>
+                  <IconButton onClick={() => removeList('author', index)}>
+                    <DeleteOutlineIcon sx={{ color: red[500] }} />
+                  </IconButton>
+                </Box>
+              }
             </Box>
           ))}
           <Box display="flex" justifyContent="start" sx={{ mt: 2 }}>
@@ -143,7 +152,7 @@ function ProductForm({ data, setProduct }) {
         </Grid>
         <Grid item xs={6} md={3}>
           {data.illustrator?.map((row, index) => (
-            <Box key={index} display="inline-flex" justifyContent="space-between" style={{alignItems: 'center', alignContent: 'center', padding: 0 }}>
+            <Box key={index} display="inline-flex" justifyContent="space-between" style={{ alignItems: 'center', alignContent: 'center', padding: 0 }}>
               <TextField
                 key={index}
                 required
@@ -157,7 +166,12 @@ function ProductForm({ data, setProduct }) {
                 sx={{ width: '100%', mb: 1 }}
                 onChange={(e) => setProduct({ ...data, illustrator: changeArrayValue(e.target.value, 'illustrator', index) }) }
               />
-              { index === 0 ? null : <Box sx={{ marginLeft: 2 }}><DeleteOutlineIcon /></Box> }
+              {index === 0 ? null :
+                <Box sx={{ marginLeft: 1 }}>
+                  <IconButton onClick={() => removeList('illustrator', index)}>
+                    <DeleteOutlineIcon sx={{ color: red[500] }} />
+                  </IconButton>
+                </Box>}
             </Box>
           ))}
           <Box display="flex" justifyContent="start" sx={{ mt: 2 }}>
@@ -178,11 +192,10 @@ function ProductForm({ data, setProduct }) {
             value={data.description || ''}
             minRows={3}
             sx={{ width: '100%' }}
-            onChange={(e) => setProduct({ ...data, description: e.target.value }) }
-          />
+            onChange={(e) => setProduct({ ...data, description: e.target.value }) } />
         </Grid>
         {/* row 4 */}
-        <Grid item xs={6} md={6}>
+        <Grid item xs={12} md={6}>
           <Box display="flex" justifyContent="start">
             {data.images?.map((image) => (
               <Image key={image} src={image} alt="" />
@@ -190,7 +203,7 @@ function ProductForm({ data, setProduct }) {
             <AddPhotoAlternateOutlinedIcon color="primary" sx={{ fontSize: 86 }}/>
           </Box>
         </Grid>
-        <Grid item xs={6} md={6} sx={{ display: 'inline-flex' }}>
+        <Grid item xs={6} md={6} sx={{ display: 'inline-flex', justifyContent: 'space-between' }}>
           <div>
             <Checkbox
               checked={bookCheck}
@@ -208,8 +221,9 @@ function ProductForm({ data, setProduct }) {
               disabled={!bookCheck}
               variant="outlined"
               value={data.price || ''}
-              onChange={(e) => setProduct({ ...data, price: +e.target.value }) }
-            />
+              onChange={(e) => setProduct({ ...data, price: +e.target.value }) }/>
+            </div>
+          <div>
             <Checkbox
               checked={eBookCheck}
               name="eBookCheck"
@@ -262,15 +276,13 @@ function ProductForm({ data, setProduct }) {
         <Grid item xs={6} md={4}>
           <div>
             <FormControl
-              sx={{ width: '100%' }} 
-            >
+              sx={{ width: '100%' }} >
               <InputLabel id="status-select-label">Status</InputLabel>
               <Select
                 id="status-select-label"
                 value={data.status || ''}
                 label="Status"
-                onChange={(e) => setProduct({ ...data, status: e.target.value }) }
-              >
+                onChange={(e) => setProduct({ ...data, status: e.target.value }) }>
                 <MenuItem value={'active'}>Available</MenuItem>
                 <MenuItem value={'inactive'}>Unavailable</MenuItem>
               </Select>
@@ -278,15 +290,14 @@ function ProductForm({ data, setProduct }) {
           </div>
         </Grid>
       </Grid>
-      <div style={{ margin: '20px' }}>
-        <Button variant={"contained"} onClick={submitData}>
+      <Box display="flex" justifyContent="end" sx={{ marginY: 4 }}>
+        <Button variant={"outlined"} sx={{ marginLeft: 2 }}>
+          Cancel
+        </Button>
+        <Button variant={"contained"} sx={{ marginLeft: 2 }} onClick={submitData}>
           Submit
         </Button>
-        <Button variant={"outlined"}>
-          Reset
-        </Button>
-
-      </div>
+      </Box>
     </Paper>
   )
 }
