@@ -25,7 +25,7 @@ const menuItems = [
   },
   {
     label: 'Product',
-    path: '/product',
+    path: '/products',
     icon: 'Category'
   }
 ]

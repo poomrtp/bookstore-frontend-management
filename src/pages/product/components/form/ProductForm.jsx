@@ -15,32 +15,44 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import IconButton from '@mui/material/IconButton'
 import { red } from '@mui/material/colors'
 
-// const defaultValues = {
-//   textValue: "",
-//   radioValue: "",
-//   checkboxValue: [],
-//   dropdownValue: "",
-//   sliderValue: 0,
-// };
-  
-
-function ProductForm({ data, setProduct, submitUpdate }) {
+function ProductForm({ data, setProduct, submitUpdate, isCreate }) {
 
   const [checkStatus, setChecked] = useState({
-    bookCheck: data.price ?  true : false || true,
-    eBookCheck: data.digitalPrice ?  true : false || true
+    price: data?.price ?  true : false || true,
+    digitalPrice: data?.digitalPrice ?  true : false || true
   })
   const handleChange = (event) => {
     setChecked({
       ...checkStatus,
       [event.target.name]: event.target.checked,
     })
+    setProduct({ ...data, [event.target.name]: event.target.checked ? data[event.target.checked]: 0})
   }
-  const { bookCheck, eBookCheck } = checkStatus
+  const { price, digitalPrice } = checkStatus
 
   const submitData = () => {
     console.log('submitData', data)
-    submitUpdate(data)
+    const types = []
+    if (checkStatus.price) {
+      types.push({
+        name: 'book',
+        nameTH: 'หนังสือเล่ม',
+        price: data.price
+      })
+    }
+    if (checkStatus.digitalPrice) {
+      types.push({
+        name: 'e-book',
+        nameTH: 'อีบุ๊ค',
+        price: data.digitalPrice
+      })
+    }
+    setProduct({ ...data, types: types })
+    if (isCreate) {
+      console.log(data)
+    } else {
+      submitUpdate({ ...data, types: types })
+    }
   }
 
   const addList = (key) => {
@@ -72,7 +84,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               shrink: true,
             }}
             variant="outlined"
-            value={data.id || ''}
+            value={data?.id || ''}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, id: e.target.value }) }
           />
@@ -86,7 +98,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               shrink: true,
             }}
             variant="outlined"
-            value={data.publisher || ''}
+            value={data?.publisher || ''}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, publisher: e.target.value }) }
           />
@@ -101,7 +113,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               shrink: true,
             }}
             variant="outlined"
-            value={data.name || ''}
+            value={data?.name || ''}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, name: e.target.value }) }
           />
@@ -114,14 +126,14 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               shrink: true,
             }}
             variant="outlined"
-            value={data.nameEN || ''}
+            value={data?.nameEN || ''}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, nameEN: e.target.value }) }
           />
         </Grid>
         {/* row 3 */}
         <Grid item xs={6} md={3}>
-          {data.author?.map((row, index) => (
+          {data?.author?.map((row, index) => (
             <Box key={index} display="inline-flex" justifyContent="space-between" style={{alignItems: 'center', alignContent: 'center', padding: 0 }}>
               <TextField
                 // key={index}
@@ -152,7 +164,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
           </Box>
         </Grid>
         <Grid item xs={6} md={3}>
-          {data.illustrator?.map((row, index) => (
+          {data?.illustrator?.map((row, index) => (
             <Box key={index} display="inline-flex" justifyContent="space-between" style={{ alignItems: 'center', alignContent: 'center', padding: 0 }}>
               <TextField
                 key={index}
@@ -190,7 +202,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
             }}
             variant="outlined"
             multiline
-            value={data.description || ''}
+            value={data?.description || ''}
             minRows={3}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, description: e.target.value }) } />
@@ -198,7 +210,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
         {/* row 4 */}
         <Grid item xs={12} md={6}>
           <Box display="flex" justifyContent="start">
-            {data.images?.map((image) => (
+            {data?.images?.map((image) => (
               <Image key={image} src={image} alt="" />
             ))}
             <AddPhotoAlternateOutlinedIcon color="primary" sx={{ fontSize: 86 }}/>
@@ -207,8 +219,8 @@ function ProductForm({ data, setProduct, submitUpdate }) {
         <Grid item xs={6} md={6} sx={{ display: 'inline-flex', justifyContent: 'space-between' }}>
           <div>
             <Checkbox
-              checked={bookCheck}
-              name="bookCheck"
+              checked={price}
+              name="price"
               onChange={handleChange}
               inputProps={{ 'aria-label': 'book' }}
             />
@@ -219,15 +231,15 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               InputLabelProps={{
                 shrink: true,
               }}
-              disabled={!bookCheck}
+              disabled={!price}
               variant="outlined"
-              value={data.price || ''}
+              value={data?.price || ''}
               onChange={(e) => setProduct({ ...data, price: +e.target.value }) }/>
             </div>
           <div>
             <Checkbox
-              checked={eBookCheck}
-              name="eBookCheck"
+              checked={digitalPrice}
+              name="digitalPrice"
               onChange={handleChange}
               inputProps={{ 'aria-label': 'e-book' }}
             />
@@ -238,9 +250,9 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               InputLabelProps={{
                 shrink: true,
               }}
-              disabled={!eBookCheck}
+              disabled={!digitalPrice}
               variant="outlined"
-              value={data.digitalPrice || ''}
+              value={data?.digitalPrice || ''}
               onChange={(e) => setProduct({ ...data, digitalPrice: +e.target.value }) }
             />
           </div>
@@ -255,7 +267,8 @@ function ProductForm({ data, setProduct, submitUpdate }) {
             }}
             variant="outlined"
             multiline
-            value={data.quantity || ''}
+            value={data?.quantity || ''}
+            required={true}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, quantity: +e.target.value }) }
           />
@@ -269,7 +282,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
             }}
             variant="outlined"
             multiline
-            value={data.weight || ''}
+            value={data?.weight || ''}
             sx={{ width: '100%' }}
             onChange={(e) => setProduct({ ...data, weight: e.target.value }) }
           />
@@ -281,7 +294,7 @@ function ProductForm({ data, setProduct, submitUpdate }) {
               <InputLabel id="status-select-label">Status</InputLabel>
               <Select
                 id="status-select-label"
-                value={data.status || ''}
+                value={data?.status || ''}
                 label="Status"
                 onChange={(e) => setProduct({ ...data, status: e.target.value }) }>
                 <MenuItem value={'active'}>Available</MenuItem>

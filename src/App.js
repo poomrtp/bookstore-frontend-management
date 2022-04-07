@@ -12,9 +12,10 @@ function App() {
           <Route path="/">
             <Route index element={<Home />} />
           </Route>
-          <Route path="/product">
+          <Route path="/products">
             <Route index element={<Product />} />
             <Route path=":name" element={<ProductDetail />} />
+            <Route path="create" element={<ProductDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>
