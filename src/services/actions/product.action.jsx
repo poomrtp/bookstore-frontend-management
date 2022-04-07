@@ -11,3 +11,6 @@ export const getProductByName = async(param) => {
   const res = await axios.get(`${apiUrl}/api/products/${param}`)
   return res.data
 }
+export const updateProduct = async(payload) => {
+  await axios.patch(`${apiUrl}/api/products/update-book/${payload.name}`, payload )
+}

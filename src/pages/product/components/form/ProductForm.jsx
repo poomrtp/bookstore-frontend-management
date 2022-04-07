@@ -24,7 +24,7 @@ import { red } from '@mui/material/colors'
 // };
   
 
-function ProductForm({ data, setProduct }) {
+function ProductForm({ data, setProduct, submitUpdate }) {
 
   const [checkStatus, setChecked] = useState({
     bookCheck: data.price ?  true : false || true,
@@ -40,6 +40,7 @@ function ProductForm({ data, setProduct }) {
 
   const submitData = () => {
     console.log('submitData', data)
+    submitUpdate(data)
   }
 
   const addList = (key) => {

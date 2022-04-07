@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/system';
+import Button from '@mui/material/Button'
 import NavLayout from '../../layouts/Navbar'
 import DataTable from '../../components/dataTable/DataTable'
 import { getProducts } from '../../services/actions/product.action';
@@ -49,8 +50,11 @@ const Product = () => {
   return (
     <div className="">
       <NavLayout>
-        <Box display="flex" justifyContent="start">
+        <Box display="flex" justifyContent="space-between" alignItems="center" paddingY={2}>
           <div positions="">Product</div>
+          <div>
+            <Button variant={"contained"}>Add product</Button>
+          </div>
         </Box>
         <div>
           <DataTable

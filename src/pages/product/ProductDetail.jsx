@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductByName } from '../../services/actions/product.action';
+import { getProductByName, updateProduct } from '../../services/actions/product.action';
 import NavLayout from '../../layouts/Navbar'
-import ProductForm from '../../components/form/ProductForm';
+import ProductForm from './components/form/ProductForm';
 
 const ProductDetail = () => {
   const { name } = useParams();
@@ -14,14 +14,14 @@ const ProductDetail = () => {
     fetchData()
   }, [name])
   
-  const addList = (key) => {
-    console.log(key)
-    key.push('')
+  const submitUpdate = async(payload) => {
+    await updateProduct(payload)
   }
+
   return (
     <div className="">
       <NavLayout>
-        <ProductForm data={product} setProduct={setProduct} addList={addList}></ProductForm>
+        <ProductForm data={product} setProduct={setProduct} submitUpdate={submitUpdate}></ProductForm>
       </NavLayout>
     </div>
   )
