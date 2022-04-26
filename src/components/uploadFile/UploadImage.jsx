@@ -9,8 +9,6 @@ const ACCESS_KEY = process.env.REACT_APP_S3_ACCESS_KEY
 const SECRET_ACCESS_KEY = process.env.REACT_APP_S3_SECRET_ACCESS_KEY
 
 
-console.log(process.env)
-
 // const config = {
 //     bucketName: S3_BUCKET,
 //     region: REGION,
@@ -37,7 +35,6 @@ const myBucket = new aws.S3({
 const UploadImage = () => {
 
   const [selectedFile, setSelectedFile] = useState(null)
-  console.log(process.env)
   const handleFileInput = (e) => {
     setSelectedFile(e.target.files[0]);
   }
