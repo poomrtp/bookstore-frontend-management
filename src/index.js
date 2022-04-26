@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import store from './store'
+import { Provider } from 'react-redux';
 import { StyledEngineProvider } from '@mui/material/styles';
-
+window.store = store
 ReactDOM.render(
   <React.StrictMode >
-    <StyledEngineProvider injectFirst>
-      <App />
-    </StyledEngineProvider>
+    <Provider store={store}>
+      <StyledEngineProvider injectFirst>
+        <App />
+      </StyledEngineProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

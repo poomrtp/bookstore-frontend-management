@@ -2,6 +2,8 @@ import Home from './pages/home/Home';
 import Product from './pages/product/ProductList.jsx'
 import ProductDetail from './pages/product/ProductDetail'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { connect } from 'react-redux'
+
 import './App.css';
 
 function App() {
@@ -22,5 +24,9 @@ function App() {
     </div>
   );
 }
-
-export default App;
+const mapStateToProps = state => {
+  return {
+    data: state
+  }
+}
+export default connect(mapStateToProps)(App)

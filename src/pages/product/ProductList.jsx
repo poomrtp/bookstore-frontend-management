@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Box } from '@mui/system';
+import { useEffect } from 'react'
+import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import { Link } from 'react-router-dom'
 import NavLayout from '../../layouts/Navbar'
 import DataTable from '../../components/dataTable/DataTable'
-import { getProducts } from '../../services/actions/product.action';
+import DefaultLoading from '../../components/loading/defaultLoading'
+import { getProducts } from '../../services/actions/product/product.action'
+import { useDispatch, useSelector } from 'react-redux'
 
 const headTable = [
   {
@@ -44,10 +46,15 @@ const headTable = [
 ] 
 
 const Product = () => {
-  const [products, setProducts] = useState('')
+  const dispatch = useDispatch()
+  const products = useSelector((state) => state.products)
   useEffect(() => {
-    getProducts().then(res => setProducts(res))
-  },[])
+    dispatch(getProducts())
+  }, [dispatch])
+  console.log('products.productData', products.productData)
+  if (products.isFetching) {
+    return <DefaultLoading />
+  }
   return (
     <div className="">
       <NavLayout>
@@ -60,10 +67,16 @@ const Product = () => {
           </div>
         </Box>
         <div>
-          <DataTable
-            data={[...products]}
+          {products?.productData.length > 0 ?
+            <DataTable
+              data={[...products.productData]}
+              headTable={headTable}>
+            </DataTable> :
+            null}
+          {/* <DataTable
+            data={[...products.productData] || []}
             headTable={headTable}>
-          </DataTable>
+          </DataTable> */}
         </div>
       </NavLayout>
     </div>
